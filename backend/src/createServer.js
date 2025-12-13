@@ -29,7 +29,7 @@ async function createServer() {
     handler: () => ({ status: "ok", time: new Date().toISOString() }),
   });
 
-  await server.initialize(); // penting: jangan start()
+  await server.initialize();
   return server;
 }
 

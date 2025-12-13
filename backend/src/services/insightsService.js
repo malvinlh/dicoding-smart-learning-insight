@@ -38,7 +38,6 @@ class LearningInsightsService {
   }
 
   // ========= ML UPSERT (POST /insights) =========
-  // source dipaksa 'ml'
   async upsertLearningInsight(payload) {
     const {
       user_id,
@@ -136,7 +135,6 @@ class LearningInsightsService {
       const res = await this._pool.query(query);
       return res.rows[0];
     } catch (e) {
-      // duplikat PK user_id
       if (e && e.code === '23505') {
         throw new ConflictError('User ID sudah digunakan');
       }

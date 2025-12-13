@@ -1,4 +1,3 @@
-// src/components/AIInsightPage.jsx
 import React, { useState } from "react";
 
 const LEARNING_LABEL_DESCRIPTIONS = {

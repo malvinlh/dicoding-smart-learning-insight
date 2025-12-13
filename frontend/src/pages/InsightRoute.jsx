@@ -1,4 +1,3 @@
-// src/pages/InsightRoute.jsx
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import AiInsightPage from "../components/AIInsightPage";

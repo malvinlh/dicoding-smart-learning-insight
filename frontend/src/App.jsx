@@ -1,4 +1,3 @@
-// src/App.jsx
 import React, { useEffect, useState } from "react";
 import { Routes, Route, useNavigate } from "react-router-dom";
 
@@ -48,7 +47,7 @@ export default function App() {
         <Route path="/add" element={<InsightFormPage mode="add" />} />
         <Route path="/edit/:userId" element={<InsightFormPage mode="edit" />} />
 
-        {/* fallback */}
+        {/* Fallback */}
         <Route path="*" element={<NotFound />} />
       </Routes>
     </div>

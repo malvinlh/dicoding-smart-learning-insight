@@ -1,4 +1,3 @@
-// src/pages/Lookup.jsx
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import UserIdForm from "../components/UserIdForm";

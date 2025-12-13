@@ -30,7 +30,7 @@ class LearningInsightsHandler {
 
   // GET /insights?source=ml|manual
   async listInsightsHandler(request, h) {
-    const { source } = request.query; // optional
+    const { source } = request.query;
 
     const insights = await this._service.listInsights(source);
     return { status: 'success', data: { insights } };

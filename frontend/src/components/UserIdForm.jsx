@@ -1,4 +1,3 @@
-// src/components/UserIdForm.jsx
 import React, { useState } from "react";
 
 export default function UserIdForm({ onSubmit, loading, error }) {

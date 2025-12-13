@@ -28,8 +28,6 @@ const errorHandler = (server) => {
         .code(error.output.statusCode);
     }
 
-    // console.error('INTERNAL SERVER ERROR:', error);
-
     return h
       .response({
         status: 'error',

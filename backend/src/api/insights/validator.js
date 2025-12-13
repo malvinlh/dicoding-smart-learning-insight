@@ -1,7 +1,6 @@
 const Joi = require('joi');
 const ValidationError = require('../../exceptions/ValidationError');
 
-// schema payload inti (kolom sesuai DB)
 const BaseInsightSchema = {
   user_id: Joi.number().integer().required(),
   display_name: Joi.string().required(),
@@ -15,13 +14,10 @@ const BaseInsightSchema = {
   exam_submission_suggestion: Joi.string().allow(null, ''),
 };
 
-// Untuk ML upsert: sama seperti sebelumnya
 const MlInsightPayloadSchema = Joi.object(BaseInsightSchema);
 
-// Untuk manual create: sama (form isi kolom2 DB)
 const ManualCreateSchema = Joi.object(BaseInsightSchema);
 
-// Untuk manual update: tetap require semua (biar sederhana & sesuai form)
 const ManualUpdateSchema = Joi.object(BaseInsightSchema);
 
 module.exports = {
