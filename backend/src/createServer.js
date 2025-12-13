@@ -1,22 +1,17 @@
-require('dotenv').config();
 const Hapi = require('@hapi/hapi');
 
-const pool = require('./services/db');
-const InsightsService = require('./services/insightsService');
-const InsightsHandler = require('./api/insights/handler');
-const insightsRoutes = require('./api/insights/routes');
-const InsightsValidator = require('./api/insights/validator');
-const errorHandler = require('./utils/errorHandler');
+const pool = require('../src/services/db');
+const InsightsService = require('../src/services/insightsService');
+const InsightsHandler = require('../src/api/insights/handler');
+const insightsRoutes = require('../src/api/insights/routes');
+const InsightsValidator = require('../src/api/insights/validator');
+const errorHandler = require('../src/utils/errorHandler');
 
-async function createServer() {
+module.exports = async function createServer() {
   const server = Hapi.server({
-    port: 0,
-    host: 'localhost',
-    routes: {
-      cors: {
-        origin: ['*'],
-      },
-    },
+    port: process.env.PORT || 5000,
+    host: process.env.HOST || '0.0.0.0',
+    routes: { cors: { origin: ['*'] } },
   });
 
   errorHandler(server);
@@ -33,6 +28,4 @@ async function createServer() {
 
   await server.initialize();
   return server;
-}
-
-module.exports = createServer;
+};

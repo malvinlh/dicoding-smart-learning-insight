@@ -1,6 +1,5 @@
-// src/api/insightsApi.js
-const API_BASE_URL =
-  import.meta.env.VITE_API_BASE_URL || "http://localhost:5000";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "";
+const API_PREFIX = import.meta.env.DEV ? "" : "/api";
 
 async function parseError(res, fallback) {
   let message = fallback;
@@ -11,26 +10,30 @@ async function parseError(res, fallback) {
   return message;
 }
 
-// GET /insights/{userId}
+function url(path) {
+  return `${API_BASE_URL}${API_PREFIX}${path}`;
+}
+
+// GET /api/insights/{userId}
 export async function getInsightByUserId(userId) {
-  const res = await fetch(`${API_BASE_URL}/insights/${userId}`);
+  const res = await fetch(url(`/insights/${userId}`));
   if (!res.ok) throw new Error(await parseError(res, "Gagal mengambil insight"));
   const json = await res.json();
   return json.data.insight;
 }
 
-// GET /insights?source=ml|manual
+// GET /api/insights?source=ml|manual
 export async function listInsights(source) {
   const qs = source ? `?source=${encodeURIComponent(source)}` : "";
-  const res = await fetch(`${API_BASE_URL}/insights${qs}`);
+  const res = await fetch(url(`/insights${qs}`));
   if (!res.ok) throw new Error(await parseError(res, "Gagal mengambil daftar insight"));
   const json = await res.json();
   return json.data.insights;
 }
 
-// POST /insights/manual  (INSERT only)
+// POST /api/insights/manual
 export async function createManualInsight(payload) {
-  const res = await fetch(`${API_BASE_URL}/insights/manual`, {
+  const res = await fetch(url(`/insights/manual`), {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(payload),
@@ -40,9 +43,9 @@ export async function createManualInsight(payload) {
   return json.data.insight;
 }
 
-// PUT /insights/manual/{userId}
+// PUT /api/insights/manual/{userId}
 export async function updateManualInsight(userId, payload) {
-  const res = await fetch(`${API_BASE_URL}/insights/manual/${userId}`, {
+  const res = await fetch(url(`/insights/manual/${userId}`), {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(payload),
@@ -52,38 +55,12 @@ export async function updateManualInsight(userId, payload) {
   return json.data.insight;
 }
 
-// DELETE /insights/manual/{userId}
+// DELETE /api/insights/manual/{userId}
 export async function deleteManualInsight(userId) {
-  const res = await fetch(`${API_BASE_URL}/insights/manual/${userId}`, {
+  const res = await fetch(url(`/insights/manual/${userId}`), {
     method: "DELETE",
   });
   if (!res.ok) throw new Error(await parseError(res, "Gagal delete insight manual"));
   const json = await res.json();
   return json.data;
-}
-
-// Mapping DB row -> shape AiInsightPage
-export function mapRowToProfile(row) {
-  return {
-    userId: row.user_id,
-    displayName: row.display_name,
-    learningStyles: {
-      clusterLabel: row.learning_styles_cluster_label || "Steady Learners",
-      insight:
-        row.learning_styles_insight ||
-        "Insight gaya belajar belum tersedia untuk pengguna ini.",
-      suggestion:
-        row.learning_styles_suggestion ||
-        "Belum ada saran spesifik.",
-    },
-    examPerformance: {
-      clusterLabel: row.exam_submission_cluster_label || "Good Performers",
-      insight:
-        row.exam_submission_insight ||
-        "Insight performa ujian belum tersedia.",
-      suggestion:
-        row.exam_submission_suggestion ||
-        "Belum ada saran spesifik.",
-    },
-  };
 }
