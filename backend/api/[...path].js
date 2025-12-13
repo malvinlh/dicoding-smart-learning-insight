@@ -38,17 +38,21 @@ module.exports = async (req, res) => {
 
     res.statusCode = hapiRes.statusCode;
 
+    // Copy headers (biarkan content-encoding kalau memang ada)
     for (const [key, value] of Object.entries(hapiRes.headers || {})) {
       const lower = key.toLowerCase();
-
-      if (lower === "content-length") continue;
-      if (lower === "content-encoding") continue;
-      if (lower === "transfer-encoding") continue;
-
+      if (lower === "content-length") continue;      // biar Node hitung sendiri
+      if (lower === "transfer-encoding") continue;   // hindari konflik
       res.setHeader(key, value);
     }
 
-    const body = Buffer.from(hapiRes.payload || "", "utf8");
+    // Kalau ada kompresi, body yang benar adalah rawPayload (bytes),
+    // bukan hapiRes.payload (string yang sudah “terdecode”).
+    const isCompressed = !!hapiRes.headers?.["content-encoding"];
+    const body = isCompressed
+      ? hapiRes.rawPayload // Buffer
+      : Buffer.from(hapiRes.payload || "", "utf8");
+
     res.end(body);
   } catch (err) {
     res.statusCode = 500;
