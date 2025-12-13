@@ -30,6 +30,15 @@ async function createServer() {
     path: '/health',
     handler: () => ({ status: 'ok', time: new Date().toISOString() }),
   });
+  server.route({
+    method: 'GET',
+    path: '/db-check',
+    handler: async () => {
+      const r = await pool.query('select 1 as ok');
+      return { status: 'ok', db: r.rows[0] };
+    },
+  });
+
 
   await server.initialize();
   return server;
