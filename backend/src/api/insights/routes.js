@@ -1,5 +1,5 @@
 const insightsRoutes = (handler) => [
-  // List all insights (optional filter)
+  // List all insights
   {
     method: 'GET',
     path: '/insights',
