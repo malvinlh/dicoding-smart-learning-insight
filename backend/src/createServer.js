@@ -1,17 +1,19 @@
-const Hapi = require('@hapi/hapi');
+const Hapi = require("@hapi/hapi");
 
-const pool = require('../src/services/db');
-const InsightsService = require('../src/services/insightsService');
-const InsightsHandler = require('../src/api/insights/handler');
-const insightsRoutes = require('../src/api/insights/routes');
-const InsightsValidator = require('../src/api/insights/validator');
-const errorHandler = require('../src/utils/errorHandler');
+const pool = require("./services/db");
+const InsightsService = require("./services/insightsService");
+const InsightsHandler = require("./api/insights/handler");
+const insightsRoutes = require("./api/insights/routes");
+const InsightsValidator = require("./api/insights/validator");
+const errorHandler = require("./utils/errorHandler");
 
-module.exports = async function createServer() {
+async function createServer() {
   const server = Hapi.server({
-    port: process.env.PORT || 5000,
-    host: process.env.HOST || '0.0.0.0',
-    routes: { cors: { origin: ['*'] } },
+    routes: {
+      cors: {
+        origin: ["*"],
+      },
+    },
   });
 
   errorHandler(server);
@@ -20,12 +22,15 @@ module.exports = async function createServer() {
   const handler = new InsightsHandler(service, InsightsValidator);
 
   server.route(insightsRoutes(handler));
+
   server.route({
-    method: 'GET',
-    path: '/health',
-    handler: () => ({ status: 'ok', time: new Date().toISOString() }),
+    method: "GET",
+    path: "/health",
+    handler: () => ({ status: "ok", time: new Date().toISOString() }),
   });
 
-  await server.initialize();
+  await server.initialize(); // penting: jangan start()
   return server;
-};
+}
+
+module.exports = createServer;

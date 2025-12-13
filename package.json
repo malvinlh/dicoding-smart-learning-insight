@@ -1,8 +1,14 @@
 {
-  "name": "dicoding-smart-learning-insight-root",
+  "name": "dicoding-learning-insight-monorepo",
   "private": true,
-  "workspaces": ["frontend", "backend"],
+  "type": "commonjs",
   "scripts": {
-    "build": "npm --prefix frontend run build"
+    "build": "npm --prefix frontend ci && npm --prefix frontend run build"
+  },
+  "dependencies": {
+    "@hapi/hapi": "^21.3.12",
+    "dotenv": "^16.4.5",
+    "joi": "^17.13.3",
+    "pg": "^8.13.1"
   }
 }

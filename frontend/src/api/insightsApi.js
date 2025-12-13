@@ -1,8 +1,9 @@
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "";
-const API_PREFIX =
-  import.meta.env.VITE_API_PREFIX !== undefined
-    ? import.meta.env.VITE_API_PREFIX
-    : "/api";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || ""; // kosong = same origin
+const API_PREFIX = "/api";
+
+function apiUrl(path) {
+  return `${API_BASE_URL}${API_PREFIX}${path}`;
+}
 
 async function parseError(res, fallback) {
   let message = fallback;
@@ -13,64 +14,45 @@ async function parseError(res, fallback) {
   return message;
 }
 
-function url(path) {
-  return `${API_BASE_URL}${API_PREFIX}${path}`;
-}
-
-// GET /api/insights/{userId}
 export async function getInsightByUserId(userId) {
-  const res = await fetch(url(`/insights/${userId}`));
+  const res = await fetch(apiUrl(`/insights/${userId}`));
   if (!res.ok) throw new Error(await parseError(res, "Gagal mengambil insight"));
   const json = await res.json();
   return json.data.insight;
 }
 
-// GET /api/insights?source=ml|manual
 export async function listInsights(source) {
   const qs = source ? `?source=${encodeURIComponent(source)}` : "";
-  const res = await fetch(url(`/insights${qs}`));
+  const res = await fetch(apiUrl(`/insights${qs}`));
   if (!res.ok) throw new Error(await parseError(res, "Gagal mengambil daftar insight"));
   const json = await res.json();
   return json.data.insights;
 }
 
-// POST /api/insights/manual
 export async function createManualInsight(payload) {
-  const safePayload = {
-    ...payload,
-    user_id: Number(payload.user_id),
-  };
-
-  const res = await fetch(url(`/insights/manual`), {
+  const res = await fetch(apiUrl(`/insights/manual`), {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(safePayload),
+    body: JSON.stringify(payload),
   });
   if (!res.ok) throw new Error(await parseError(res, "Gagal menambah insight manual"));
   const json = await res.json();
   return json.data.insight;
 }
 
-// PUT /api/insights/manual/{userId}
 export async function updateManualInsight(userId, payload) {
-  const safePayload = {
-    ...payload,
-    user_id: Number(payload.user_id ?? userId),
-  };
-
-  const res = await fetch(url(`/insights/manual/${userId}`), {
+  const res = await fetch(apiUrl(`/insights/manual/${userId}`), {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(safePayload),
+    body: JSON.stringify(payload),
   });
   if (!res.ok) throw new Error(await parseError(res, "Gagal update insight manual"));
   const json = await res.json();
   return json.data.insight;
 }
 
-// DELETE /api/insights/manual/{userId}
 export async function deleteManualInsight(userId) {
-  const res = await fetch(url(`/insights/manual/${userId}`), {
+  const res = await fetch(apiUrl(`/insights/manual/${userId}`), {
     method: "DELETE",
   });
   if (!res.ok) throw new Error(await parseError(res, "Gagal delete insight manual"));
