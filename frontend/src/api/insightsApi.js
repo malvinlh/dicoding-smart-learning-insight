@@ -1,5 +1,8 @@
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "";
-const API_PREFIX = import.meta.env.DEV ? "" : "/api";
+const API_PREFIX =
+  import.meta.env.VITE_API_PREFIX !== undefined
+    ? import.meta.env.VITE_API_PREFIX
+    : "/api";
 
 async function parseError(res, fallback) {
   let message = fallback;
@@ -33,10 +36,15 @@ export async function listInsights(source) {
 
 // POST /api/insights/manual
 export async function createManualInsight(payload) {
+  const safePayload = {
+    ...payload,
+    user_id: Number(payload.user_id),
+  };
+
   const res = await fetch(url(`/insights/manual`), {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(payload),
+    body: JSON.stringify(safePayload),
   });
   if (!res.ok) throw new Error(await parseError(res, "Gagal menambah insight manual"));
   const json = await res.json();
@@ -45,10 +53,15 @@ export async function createManualInsight(payload) {
 
 // PUT /api/insights/manual/{userId}
 export async function updateManualInsight(userId, payload) {
+  const safePayload = {
+    ...payload,
+    user_id: Number(payload.user_id ?? userId),
+  };
+
   const res = await fetch(url(`/insights/manual/${userId}`), {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(payload),
+    body: JSON.stringify(safePayload),
   });
   if (!res.ok) throw new Error(await parseError(res, "Gagal update insight manual"));
   const json = await res.json();
