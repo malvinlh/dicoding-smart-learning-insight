@@ -64,3 +64,29 @@ export async function deleteManualInsight(userId) {
   const json = await res.json();
   return json.data;
 }
+
+// Mapping DB row -> shape AiInsightPage
+export function mapRowToProfile(row) {
+  return {
+    userId: row.user_id,
+    displayName: row.display_name,
+    learningStyles: {
+      clusterLabel: row.learning_styles_cluster_label || "Steady Learners",
+      insight:
+        row.learning_styles_insight ||
+        "Insight gaya belajar belum tersedia untuk pengguna ini.",
+      suggestion:
+        row.learning_styles_suggestion ||
+        "Belum ada saran spesifik.",
+    },
+    examPerformance: {
+      clusterLabel: row.exam_submission_cluster_label || "Good Performers",
+      insight:
+        row.exam_submission_insight ||
+        "Insight performa ujian belum tersedia.",
+      suggestion:
+        row.exam_submission_suggestion ||
+        "Belum ada saran spesifik.",
+    },
+  };
+}
