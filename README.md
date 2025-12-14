@@ -38,4 +38,4 @@ The database is hosted separately using **Neon (PostgreSQL)**.
 - All displayed insights are **personal and private**.
 
 ## 👨‍💻 Author
-Developed as part of the **Dicoding Smart Learning Insight** project, focusing on the integration of **AI, data analytics, and modern web applications**.
+Developed as part of the **Asah led by Di coding 2025 Capstone Project**.
