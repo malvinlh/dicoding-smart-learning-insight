@@ -29,7 +29,7 @@ The application also provides an **admin dashboard** for managing insights manua
 
 ## 🚀 Deployment
 This project is designed to run in **a single Vercel project** using serverless APIs.  
-Both frontend and backend share the same domain, enabling seamless API communication.
+Both frontend and backend share the same domain, enabling seamless API communication.  
 The database is hosted separately using **Neon (PostgreSQL)**.
 
 ## 📌 Notes
