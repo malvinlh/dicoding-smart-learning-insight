@@ -1,23 +1,21 @@
 import React, { useState } from "react";
 
 const LEARNING_LABEL_DESCRIPTIONS = {
-  "consistent learner":
-    "Memiliki jumlah materi yang konsisten diselesaikan setiap hari atau minggunya.",
-  "fast learner":
-    "Menyelesaikan banyak materi (lebih dari 5 materi) dalam satu hari.",
-  "reflective learner":
-    "Menghabiskan banyak waktu untuk mempelajari atau mengulas kembali materi.",
   "Steady Learners":
-    "Memiliki pola belajar yang stabil dan ritme penyelesaian materi yang relatif tetap.",
+    "Memiliki pola belajar yang stabil dan konsisten, dengan ritme penyelesaian materi yang relatif terjaga dari waktu ke waktu.",
+  "Fast & Consistent Learners":
+    "Menyelesaikan materi pembelajaran dengan cepat sekaligus konsisten, menunjukkan kecepatan belajar tinggi tanpa mengorbankan keteraturan.",
+  "At-Risk Learners":
+    "Menunjukkan pola belajar yang mengindikasikan adanya tantangan dalam konsistensi atau progres, sehingga memerlukan perhatian dan strategi belajar yang lebih terarah.",
 };
 
 const EXAM_LABEL_DESCRIPTIONS = {
   "Excellent Performers":
-    "Memiliki nilai ujian sangat tinggi dan konsisten lulus.",
+    "Memperoleh hasil ujian yang sangat tinggi secara konsisten, mencerminkan pemahaman materi yang sangat baik.",
   "Good Performers":
-    "Memiliki nilai ujian di atas rata-rata dengan performa cukup stabil.",
+    "Memiliki hasil ujian di atas rata-rata dengan performa yang cukup stabil pada sebagian besar evaluasi.",
   "Needs Improvement":
-    "Sering mengalami kesulitan di ujian dan perlu meningkatkan pemahaman materi.",
+    "Sering mengalami kesulitan dalam ujian maupun tugas, sehingga perlu meningkatkan pemahaman materi dan pendekatan belajar.",
 };
 
 export default function AiInsightPage({ profile }) {
