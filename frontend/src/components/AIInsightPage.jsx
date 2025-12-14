@@ -21,7 +21,7 @@ const EXAM_LABEL_DESCRIPTIONS = {
 };
 
 export default function AiInsightPage({ profile }) {
-  const { displayName, learningStyles, examPerformance } = profile;
+  const { displayName, learningStyles, examPerformance, source } = profile;
   const [copyStatus, setCopyStatus] = useState("");
 
   const learningLabelDescription =
@@ -31,10 +31,23 @@ export default function AiInsightPage({ profile }) {
     EXAM_LABEL_DESCRIPTIONS[examPerformance.clusterLabel] ||
     "Deskripsi performa ujian belum tersedia.";
 
+  const isManual = source === "manual";
+
+  const sourceBadgeText = isManual
+    ? "Added manually by user"
+    : "Powered by machine learning model";
+
+  const sourceBadgeClass = isManual
+    ? "border-amber-200/70 bg-amber-500/10 text-amber-700 dark:border-amber-500/30 dark:bg-amber-500/15 dark:text-amber-200"
+    : "border-slate-200/70 bg-slate-900/5 text-slate-600 dark:border-slate-700/70 dark:bg-slate-900 dark:text-slate-300";
+
+  const sourceEmoji = isManual ? "✍️" : "🤖";
+
   const handleCopy = async () => {
     const reportText =
       `Dicoding Smart Learning Insight\n` +
-      `Nama: ${displayName}\n\n` +
+      `Nama: ${displayName}\n` +
+      `Sumber: ${isManual ? "Manual" : "Machine Learning"}\n\n` +
       `=== Learning Style ===\n` +
       `Label: ${learningStyles.clusterLabel}\n` +
       `Definisi: ${learningLabelDescription}\n\n` +
@@ -102,7 +115,6 @@ export default function AiInsightPage({ profile }) {
                       >
                         ⓘ
                       </button>
-                      {/* Tooltip */}
                       <div
                         className="pointer-events-none absolute left-0 top-full z-10 mt-1 w-56 scale-95 rounded-md border border-slate-200 bg-white p-3 text-[11px] text-slate-700 opacity-0 shadow-lg transition-all duration-150
                                    group-hover:scale-100 group-hover:opacity-100 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200"
@@ -124,7 +136,6 @@ export default function AiInsightPage({ profile }) {
                       >
                         ⓘ
                       </button>
-                      {/* Tooltip */}
                       <div
                         className="pointer-events-none absolute left-0 top-full z-10 mt-1 w-56 scale-95 rounded-md border border-emerald-100 bg-white p-3 text-[11px] text-slate-700 opacity-0 shadow-lg transition-all duration-150
                                    group-hover:scale-100 group-hover:opacity-100 dark:border-emerald-500/40 dark:bg-slate-900 dark:text-slate-200"
@@ -135,14 +146,19 @@ export default function AiInsightPage({ profile }) {
                   </div>
                 </div>
 
-                <span className="inline-flex items-center rounded-full border border-slate-200/70 bg-slate-900/5 px-3 py-1 text-[10px] font-medium text-slate-600 dark:border-slate-700/70 dark:bg-slate-900 dark:text-slate-300">
-                  Powered by machine learning model
+                {/* SOURCE BADGE (ml vs manual) */}
+                <span
+                  className={`inline-flex items-center gap-1 rounded-full border px-3 py-1 text-[10px] font-medium ${sourceBadgeClass}`}
+                  title={isManual ? "Insight ini diinput manual oleh user/admin." : "Insight ini dihasilkan oleh model ML."}
+                >
+                  <span aria-hidden="true">{sourceEmoji}</span>
+                  {sourceBadgeText}
                 </span>
               </div>
 
               {/* Insight & Recommendation */}
               <div className="mt-2 flex flex-col gap-4 md:flex-row md:items-start">
-                {/* Left Block: Short Insight */}
+                {/* Left Block */}
                 <div className="min-w-0 flex-1 space-y-3">
                   <h2 className="text-sm font-semibold text-slate-900 dark:text-slate-50">
                     Ringkasan AI
@@ -166,7 +182,7 @@ export default function AiInsightPage({ profile }) {
                   </div>
                 </div>
 
-                {/* Right Block: Recommendation */}
+                {/* Right Block */}
                 <div className="min-w-0 flex-1 space-y-3 border-t border-slate-200/70 pt-3 md:border-t-0 md:border-l md:border-slate-200/70 md:pl-4 md:pt-0 dark:md:border-slate-800">
                   <h2 className="text-sm font-semibold text-slate-900 dark:text-slate-50">
                     Langkah yang disarankan

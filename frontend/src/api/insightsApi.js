@@ -1,4 +1,4 @@
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || ""; // kosong = same origin
 const API_PREFIX = "/api";
 
 function apiUrl(path) {
@@ -60,10 +60,13 @@ export async function deleteManualInsight(userId) {
   return json.data;
 }
 
+// Mapping DB row -> shape AiInsightPage
 export function mapRowToProfile(row) {
   return {
     userId: row.user_id,
     displayName: row.display_name,
+    source: row.source || "ml",
+
     learningStyles: {
       clusterLabel: row.learning_styles_cluster_label || "Steady Learners",
       insight:
